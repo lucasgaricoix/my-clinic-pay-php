@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: my-clinic-pay-php
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html
+    networks:
+      - my-clinic-pay
+
+  server:
+    image: nginx:alpine
+    container_name: server
+    restart: unless-stopped
+    volumes:
+      - ./:/var/www/html
+      - ./config/:/etc/nginx/conf.d/
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - my-clinic-pay
+
+  database:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: myclinicpay_admin
+      MYSQL_DATABASE: myclinicpay
+
+networks:
+  my-clinic-pay:
+    driver: bridge

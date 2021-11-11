@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php
+  template:
+    metadata:
+      labels:
+        app: php
+    spec:
+      containers:
+        - name: php
+          image: php8-fpm
+      volumes:
+        - name: dir
+          persistentVolumeClaim:
+            claimName: dir
+      initContainers:
+        - name: install
+          image: busybox
+          volumeMounts:
+            - name: dir
+              mountPath: /dir
+          command:
+            - wget
+            - "-O"
+            - "/dir/index.php"

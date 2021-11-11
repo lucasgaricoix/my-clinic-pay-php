@@ -1,0 +1,6 @@
+# PHP
+vendor/
+
+# IDE
+.idea
+
