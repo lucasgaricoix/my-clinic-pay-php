@@ -2,10 +2,13 @@
 
 namespace MyClinicPay\Infra\Command;
 
-class CreateToken implements Command
+use MyClinicPay\Domain\Models\UserEntity;
+
+class CreateToken implements CreateTokenCommand
 {
-    public function handle(): array
+    public function handle(UserEntity $userEntity): array
     {
 
     }
+
 }
